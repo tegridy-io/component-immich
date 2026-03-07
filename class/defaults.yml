@@ -1,0 +1,5 @@
+parameters:
+  immich:
+    =_metadata:
+      multi_tenant: true
+    namespace: syn-immich

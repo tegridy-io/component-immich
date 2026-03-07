@@ -1,0 +1,5 @@
+= Immich App
+
+immich is a Commodore component to manage Immich App.
+
+See the xref:references/parameters.adoc[parameters] reference for further details.

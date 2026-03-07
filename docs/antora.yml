@@ -1,0 +1,6 @@
+name: immich
+title: Immich App
+version: master
+start_page: ROOT:index.adoc
+nav:
+  - modules/ROOT/partials/nav.adoc
