@@ -24,6 +24,7 @@ parameters:
       vectorchord:
         registry: ghcr.io
         repository: tensorchord/cloudnative-vectorchord
+        # Ensure compatibility with Immich App
         tag: 16.9-0.4.3
 
     components:
