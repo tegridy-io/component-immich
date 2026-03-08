@@ -16,7 +16,7 @@ parameters:
       immich:
         registry: ghcr.io
         repository: immich-app/immich-server
-        tag: v2.0.0
+        tag: v2.0.1
       valkey:
         registry: docker.io
         repository: valkey/valkey
