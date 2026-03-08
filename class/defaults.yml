@@ -4,7 +4,7 @@ parameters:
       multi_instance: true
       multi_tenant: true
 
-    namespace: syn-immich
+    namespace: app-${_instance}
     namespaceMetadata: {}
 
     charts:
@@ -21,6 +21,10 @@ parameters:
         registry: docker.io
         repository: valkey/valkey
         tag: 9.0-alpine
+      vectorchord:
+        registry: ghcr.io
+        repository: tensorchord/cloudnative-vectorchord
+        tag: 16.9-0.4.3
 
     components:
       server:
@@ -34,6 +38,12 @@ parameters:
           mode: 'ReadWriteOnce'
           class: 'ceph-block'
           size: '10Gi'
+      database:
+        enabled: true
+        instances: 1
+        storage:
+          size: 5Gi
+          storageClass: 'ceph-block'
       valkey:
         enabled: false
         storage:
@@ -47,6 +57,12 @@ parameters:
           class: 'ceph-block'
           size: '10Gi'
 
-    configuration: {}
+    configuration:
+      trash:
+        enabled: false
+        days: 30
+      storageTemplate:
+        enabled: true
+        template: "{{y}}/{{y}}-{{MM}}-{{dd}}/{{filename}}"
 
     helmValues: {}

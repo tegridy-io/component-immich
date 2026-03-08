@@ -9,6 +9,7 @@ metadata:
     app.kubernetes.io/name: immich-library
     name: immich-library
   name: immich-library
+  namespace: app-immich
 spec:
   accessModes:
     - ReadWriteOnce

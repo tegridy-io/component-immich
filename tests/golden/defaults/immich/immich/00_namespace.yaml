@@ -5,6 +5,6 @@ metadata:
     argocd.argoproj.io/sync-wave: '-10'
   labels:
     app.kubernetes.io/managed-by: commodore
-    app.kubernetes.io/name: syn-immich
-    name: syn-immich
-  name: syn-immich
+    app.kubernetes.io/name: app-immich
+    name: app-immich
+  name: app-immich
