@@ -3,6 +3,9 @@
 parameters:
   immich:
     components:
+      server:
+        ingress:
+          url: fotos.tegridy.io
       valkey:
         enabled: true
       machineLearning:

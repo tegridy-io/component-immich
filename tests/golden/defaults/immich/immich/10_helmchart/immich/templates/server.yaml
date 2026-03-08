@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/version: v2.0.0
     helm.sh/chart: immich-0.10.3
   name: immich-server
-  namespace: syn-immich
+  namespace: app-immich
 spec:
   ports:
     - name: http
@@ -33,7 +33,7 @@ metadata:
     app.kubernetes.io/version: v2.0.0
     helm.sh/chart: immich-0.10.3
   name: immich-server
-  namespace: syn-immich
+  namespace: app-immich
 spec:
   replicas: 1
   revisionHistoryLimit: 3
@@ -46,6 +46,8 @@ spec:
     type: RollingUpdate
   template:
     metadata:
+      annotations:
+        checksum/config: d0309716f7ae5f57b408fecccd7e0d95ae4116b83737c2c36dbe0110b0b42a3c
       labels:
         app.kubernetes.io/controller: main
         app.kubernetes.io/instance: immich
@@ -54,6 +56,28 @@ spec:
       automountServiceAccountToken: true
       containers:
         - env:
+            - name: DB_DATABASE_NAME
+              valueFrom:
+                secretKeyRef:
+                  key: dbname
+                  name: immich-database-app
+            - name: DB_HOSTNAME
+              valueFrom:
+                secretKeyRef:
+                  key: host
+                  name: immich-database-app
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: immich-database-app
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: user
+                  name: immich-database-app
+            - name: IMMICH_CONFIG_FILE
+              value: /config/immich-config.yaml
             - name: IMMICH_MACHINE_LEARNING_URL
               value: http://immich-machine-learning:3003
             - name: REDIS_HOSTNAME
@@ -90,6 +114,8 @@ spec:
             periodSeconds: 10
             timeoutSeconds: 1
           volumeMounts:
+            - mountPath: /config
+              name: config
             - mountPath: /data
               name: data
       dnsPolicy: ClusterFirst
@@ -99,6 +125,9 @@ spec:
       hostPID: false
       serviceAccountName: default
       volumes:
+        - configMap:
+            name: immich-immich-config
+          name: config
         - name: data
           persistentVolumeClaim:
             claimName: immich-library
@@ -116,10 +145,10 @@ metadata:
     app.kubernetes.io/version: v2.0.0
     helm.sh/chart: immich-0.10.3
   name: immich-server
-  namespace: syn-immich
+  namespace: app-immich
 spec:
   rules:
-    - host: immich.mydomain.local
+    - host: fotos.tegridy.io
       http:
         paths:
           - backend:
@@ -131,5 +160,5 @@ spec:
             pathType: Prefix
   tls:
     - hosts:
-        - immich.mydomain.local
+        - fotos.tegridy.io
       secretName: immich-ingress-tls

@@ -1,0 +1,22 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  labels:
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/name: immich-database
+  name: immich-database
+  namespace: app-immich
+spec:
+  bootstrap:
+    initdb:
+      postInitApplicationSQL:
+        - CREATE EXTENSION vchord CASCADE;
+        - CREATE EXTENSION earthdistance CASCADE;
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:16.9-0.4.3
+  instances: 1
+  postgresql:
+    shared_preload_libraries:
+      - vchord.so
+  storage:
+    size: 5Gi
+    storageClass: ceph-block

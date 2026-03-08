@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/version: v2.0.0
     helm.sh/chart: immich-0.10.3
   name: immich-valkey
-  namespace: syn-immich
+  namespace: app-immich
 spec:
   accessModes:
     - ReadWriteOnce
@@ -28,7 +28,7 @@ metadata:
     app.kubernetes.io/version: v2.0.0
     helm.sh/chart: immich-0.10.3
   name: immich-valkey
-  namespace: syn-immich
+  namespace: app-immich
 spec:
   ports:
     - name: redis
@@ -52,7 +52,7 @@ metadata:
     app.kubernetes.io/version: v2.0.0
     helm.sh/chart: immich-0.10.3
   name: immich-valkey
-  namespace: syn-immich
+  namespace: app-immich
 spec:
   replicas: 1
   revisionHistoryLimit: 3
@@ -73,6 +73,26 @@ spec:
       automountServiceAccountToken: true
       containers:
         - env:
+            - name: DB_DATABASE_NAME
+              valueFrom:
+                secretKeyRef:
+                  key: dbname
+                  name: immich-database-app
+            - name: DB_HOSTNAME
+              valueFrom:
+                secretKeyRef:
+                  key: host
+                  name: immich-database-app
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: immich-database-app
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: user
+                  name: immich-database-app
             - name: IMMICH_MACHINE_LEARNING_URL
               value: http://immich-machine-learning:3003
             - name: REDIS_HOSTNAME
