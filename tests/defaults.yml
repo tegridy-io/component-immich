@@ -1,3 +1,9 @@
 # Overwrite parameters here
 
-# parameters: {...}
+parameters:
+  immich:
+    components:
+      valkey:
+        enabled: true
+      machineLearning:
+        enabled: true

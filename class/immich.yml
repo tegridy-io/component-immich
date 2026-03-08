@@ -1,5 +1,12 @@
 parameters:
   kapitan:
+    dependencies:
+      - type: helm
+        source: ${immich:charts:immich:source}
+        chart_name: immich
+        version: ${immich:charts:immich:version}
+        output_path: ${_base_directory}/helmcharts/immich/${immich:charts:immich:version}/
+
     compile:
       - input_paths:
           - ${_base_directory}/component/app.jsonnet
@@ -8,4 +15,19 @@ parameters:
       - input_paths:
           - ${_base_directory}/component/main.jsonnet
         input_type: jsonnet
-        output_path: immich/
+        output_path: ${_instance}/
+      # Helm chart
+      - input_paths:
+          - ${_base_directory}/component/helm.jsonnet
+        input_type: jsonnet
+        output_path: ${_base_directory}/helmcharts/immich/${immich:charts:immich:version}/
+      - input_paths:
+          - dependencies/${_instance}/helmcharts/immich/${immich:charts:immich:version}/
+        input_type: helm
+        output_path: ${_instance}/10_helmchart
+        helm_values_files:
+          - ${_base_directory}/helmcharts/immich/${immich:charts:immich:version}/${_instance}-values.yaml
+          - ${_base_directory}/helmcharts/immich/${immich:charts:immich:version}/${_instance}-overrides.yaml
+        helm_params:
+          name: ${_instance}
+          namespace: ${immich:namespace}

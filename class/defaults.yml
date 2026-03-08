@@ -1,5 +1,52 @@
 parameters:
   immich:
     =_metadata:
+      multi_instance: true
       multi_tenant: true
+
     namespace: syn-immich
+    namespaceMetadata: {}
+
+    charts:
+      immich:
+        source: oci://ghcr.io/immich-app/immich-charts/immich
+        version: 0.10.3
+
+    images:
+      immich:
+        registry: ghcr.io
+        repository: immich-app/immich-server
+        tag: v2.0.0
+      valkey:
+        registry: docker.io
+        repository: valkey/valkey
+        tag: 9.0-alpine
+
+    components:
+      server:
+        ingress:
+          enabled: true
+          url: immich.mydomain.local
+          annotations:
+            nginx.ingress.kubernetes.io/proxy-body-size: '0'
+            cert-manager.io/cluster-issuer: 'letsencrypt-production'
+        storage:
+          mode: 'ReadWriteOnce'
+          class: 'ceph-block'
+          size: '10Gi'
+      valkey:
+        enabled: false
+        storage:
+          mode: 'ReadWriteOnce'
+          class: 'ceph-block'
+          size: '1Gi'
+      machineLearning:
+        enabled: false
+        storage:
+          mode: 'ReadWriteOnce'
+          class: 'ceph-block'
+          size: '10Gi'
+
+    configuration: {}
+
+    helmValues: {}
