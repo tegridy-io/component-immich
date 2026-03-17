@@ -20,7 +20,7 @@ parameters:
       valkey:
         registry: docker.io
         repository: valkey/valkey
-        tag: 9.0-alpine
+        tag: 9.1-alpine
       vectorchord:
         registry: ghcr.io
         repository: tensorchord/cloudnative-vectorchord
