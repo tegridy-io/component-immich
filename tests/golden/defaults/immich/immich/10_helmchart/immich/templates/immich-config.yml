@@ -1,6 +1,10 @@
 apiVersion: v1
 data:
   immich-config.yaml: |
+    newVersionCheck:
+      enabled: false
+    server:
+      externalDomain: fotos.tegridy.io
     storageTemplate:
       enabled: true
       template: '{{y}}/{{y}}-{{MM}}-{{dd}}/{{filename}}'
