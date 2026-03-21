@@ -10,12 +10,9 @@ local params = inv.parameters.immich;
 local values = {
   controllers: {
     main: {
-      containers: {
+      [if params.components.database.enabled then 'containers']: {
         main: {
-          image: {
-            tag: params.images.immich.tag,
-          },
-          [if params.components.database.enabled then 'env']: {
+          env: {
             DB_HOSTNAME: {
               valueFrom: {
                 secretKeyRef: {
@@ -128,6 +125,18 @@ local values = {
   },
   'machine-learning': {
     enabled: params.components.machineLearning.enabled,
+    controllers: {
+      main: {
+        containers: {
+          main: {
+            image: {
+              repository: '%(registry)s/%(repository)s' % params.images.machineLearning,
+              tag: params.images.machineLearning.tag,
+            },
+          },
+        },
+      },
+    },
     persistence: {
       cache: {
         enabled: 'true',
