@@ -8,11 +8,14 @@ local inv = kap.inventory();
 local params = inv.parameters.immich;
 
 local values = {
-  [if params.components.database.enabled then 'controllers']: {
+  controllers: {
     main: {
       containers: {
         main: {
-          env: {
+          image: {
+            tag: params.images.immich.tag,
+          },
+          [if params.components.database.enabled then 'env']: {
             DB_HOSTNAME: {
               valueFrom: {
                 secretKeyRef: {
