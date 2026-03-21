@@ -2,13 +2,159 @@
 
 The parent key for all of the following parameters is `immich`.
 
+
 == `namespace`
 
 [horizontal]
 type:: string
-default:: `syn-immich`
+default:: `app-${_instance}`
 
 The namespace in which to deploy this component.
+
+
+== `namespaceMetadata`
+
+[horizontal]
+type:: object
+default:: `{}`
+
+Optional metadata merged into the Kubernetes namespace object.
+
+The following keys are supported; each value must be a map of string keys to string values:
+
+* `annotations` — merged with the component’s default annotations (for example the Argo CD sync wave). Your entries are additive; defaults are preserved unless you override the same key.
+* `labels` — merged with the component’s default labels (`app.kubernetes.io/name`, `app.kubernetes.io/managed-by`). Same merge behavior as for annotations.
+
+
+== `components`
+
+[horizontal]
+type:: object
+
+Settings for the Immich Helm subcharts, the library PVC, and the CloudNativePG `Cluster` that backs Immich.
+
+=== `components.server`
+
+[horizontal]
+type:: object
+default::
++
+[source,yaml]
+----
+components:
+  server:
+    ingress:
+      enabled: true <1>
+      url: immich.mydomain.local <2>
+      annotations: <3>
+        nginx.ingress.kubernetes.io/proxy-body-size: '0'
+        cert-manager.io/cluster-issuer: 'letsencrypt-production'
+    storage: <4>
+      mode: 'ReadWriteOnce'
+      class: 'ceph-block'
+      size: '10Gi'
+----
+<1> Enable ingress
+<2> URL to use for ingress
+<3> Additional annotations for ingress controller or cert-manager
+<4> Configure the PersistantVolume
+
+Configure the server component for immich.
+
+=== `components.database`
+
+[horizontal]
+type:: object
+default::
++
+[source,yaml]
+----
+components:
+  database:
+    enabled: true <1>
+    instances: 1 <2>
+    storage: <3>
+      size: 5Gi
+      storageClass: 'ceph-block'
+----
+<1> When enabled, inject database connection env into the Immich server workload; when disabled, omit that Helm values block
+<2> Instance count (and other keys) are merged into the CloudNativePG `Cluster` `spec`
+<3> Configure the PersistantVolume
+
+Enable and configure the database needed for immich.
+
+=== `components.valkey`
+
+[horizontal]
+type:: object
+default::
++
+[source,yaml]
+----
+components:
+  valkey:
+    enabled: false <1>
+    storage: <2>
+      mode: 'ReadWriteOnce'
+      class: 'ceph-block'
+      size: '1Gi'
+----
+<1> Deploy the bundled Valkey subchart for caching
+<2> Configure the PersistantVolume
+
+Enable and configure the Redis component needed for immich.
+
+=== `components.machineLearning`
+
+[horizontal]
+type:: object
+default::
++
+[source,yaml]
+----
+components:
+  machineLearning:
+    enabled: false <1>
+    storage: <2>
+      mode: 'ReadWriteOnce'
+      class: 'ceph-block'
+      size: '10Gi'
+----
+<1> Deploy the bundled machine-learning subchart
+<2> Configure the PersistantVolume
+
+Enable and configure the machine learning component for immich.
+
+
+== `configuration`
+
+[horizontal]
+type:: object
+default::
++
+[source,yaml]
+----
+configuration:
+  newVersionCheck:
+    enabled: false
+  storageTemplate:
+    enabled: true
+    template: "{{y}}/{{y}}-{{MM}}-{{dd}}/{{filename}}"
+  trash:
+    enabled: false
+    days: 30
+----
+
+See https://docs.immich.app/install/config-file/[immich configuration].
+
+
+== `configuration`
+
+[horizontal]
+type:: object
+default:: `{}`
+
+Overwrite Helm values.
 
 
 == Example
