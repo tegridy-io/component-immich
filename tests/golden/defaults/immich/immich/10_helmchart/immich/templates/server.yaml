@@ -47,7 +47,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: d0309716f7ae5f57b408fecccd7e0d95ae4116b83737c2c36dbe0110b0b42a3c
+        checksum/config: e8d861a75180f2c59356189fd11edd68b2d8b1ab43be832ba95303d0512d3da5
       labels:
         app.kubernetes.io/controller: main
         app.kubernetes.io/instance: immich

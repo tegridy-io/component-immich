@@ -51,7 +51,11 @@ local values = {
     },
   },
   immich: {
-    configuration: params.configuration,
+    configuration: {
+      [if params.components.server.ingress.enabled then 'server']: {
+        externalDomain: params.components.server.ingress.url,
+      },
+    } + com.makeMergeable(params.configuration),
     persistence: {
       // Main data store for all photos shared between different components.
       library: {
