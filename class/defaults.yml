@@ -10,17 +10,17 @@ parameters:
     charts:
       immich:
         source: oci://ghcr.io/immich-app/immich-charts/immich
-        version: 0.10.3
+        version: 0.11.1
 
     images:
       immich:
         registry: ghcr.io
         repository: immich-app/immich-server
-        tag: v2.6.1
+        tag: v2.7.5
       machineLearning:
         registry: ghcr.io
         repository: immich-app/immich-machine-learning
-        tag: v2.5.6
+        tag: v2.7.5
       valkey:
         registry: docker.io
         repository: valkey/valkey
