@@ -5,8 +5,8 @@ metadata:
     app.kubernetes.io/instance: immich
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: machine-learning
-    app.kubernetes.io/version: v2.0.0
-    helm.sh/chart: immich-0.10.3
+    app.kubernetes.io/version: v2.6.3
+    helm.sh/chart: immich-0.11.1
   name: immich-machine-learning
   namespace: app-immich
 spec:
@@ -25,8 +25,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: machine-learning
     app.kubernetes.io/service: immich-machine-learning
-    app.kubernetes.io/version: v2.0.0
-    helm.sh/chart: immich-0.10.3
+    app.kubernetes.io/version: v2.6.3
+    helm.sh/chart: immich-0.11.1
   name: immich-machine-learning
   namespace: app-immich
 spec:
@@ -49,8 +49,8 @@ metadata:
     app.kubernetes.io/instance: immich
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: machine-learning
-    app.kubernetes.io/version: v2.0.0
-    helm.sh/chart: immich-0.10.3
+    app.kubernetes.io/version: v2.6.3
+    helm.sh/chart: immich-0.11.1
   name: immich-machine-learning
   namespace: app-immich
 spec:
@@ -103,7 +103,7 @@ spec:
               value: immich-valkey
             - name: TRANSFORMERS_CACHE
               value: /cache
-          image: ghcr.io/immich-app/immich-machine-learning:v2.5.6
+          image: ghcr.io/immich-app/immich-machine-learning:v2.7.5
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
